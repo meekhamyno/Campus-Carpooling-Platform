@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Arial&display=swap");
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:Arial, Helvetica, sans-serif;
+        font-size: 62.5%;
+        font-size: 10px;
+      }
+
+      .nav {
+        width: 100%;
+        height: 65px;
+        position: fixed;
+        line-height: 65px;
+        text-align: center;
+      }
+
+      .nav div.logo {
+        float: left;
+        width: auto;
+        height: auto;
+        padding-left: 3rem;
+      }
+
+      .nav div.logo a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 2.5rem;
+      }
+
+      .nav div.logo a:hover {
+        color: #00e676;
+      }
+
+      .nav div.main_list {
+        height: 65px;
+        float: right;
+      }
+
+      .nav div.main_list ul {
+        width: 100%;
+        height: 65px;
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav div.main_list ul li {
+        width: auto;
+        height: 65px;
+        padding: 0;
+        padding-right: 3rem;
+      }
+
+      .nav div.main_list ul li a {
+        text-decoration: none;
+        color: midnightblue;
+        line-height: 65px;
+        font-size: 2.4rem;
+      }
+
+      .nav div.main_list ul li a:hover {
+        color: #00e676;
+      }
+
+      /* Home section */
+
+      .home {
+        width: 100%;
+        height: 100vh;
+        background-image: url(https://cdn.dribbble.com/users/1138006/screenshots/16464206/media/554712c87690fa69f4e79030de40669d.png?compress=1&resize=1200x900&vertical=center);
+        background-position: center top;
+        background-size: cover;
+      }
+
+      .navTrigger {
+        display: none;
+      }
+
+      .nav {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        -webkit-transition: all 0.4s ease;
+        transition: all 0.4s ease;
+      }
+
+      @media screen and (min-width: 768px) and (max-width: 1024px) {
+        .container {
+          margin: 0;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .navTrigger {
+          display: block;
+        }
+        .nav div.logo {
+          margin-left: 15px;
+        }
+        .nav div.main_list {
+          width: 100%;
+          height: 0;
+          overflow: hidden;
+        }
+        .nav div.show_list {
+          height: auto;
+          display: none;
+        }
+        .nav div.main_list ul {
+          flex-direction: column;
+          width: 100%;
+          height: 100vh;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          background-color: #111;
+          background-position: center top;
+        }
+        .nav div.main_list ul li {
+          width: 100%;
+          text-align: right;
+        }
+        .nav div.main_list ul li a {
+          text-align: center;
+          width: 100%;
+          font-size: 3rem;
+          padding: 20px;
+        }
+        .nav div.media_button {
+          display: block;
+        }
+      }
+
+      .navTrigger {
+        cursor: pointer;
+        width: 30px;
+        height: 25px;
+        margin: auto;
+        position: absolute;
+        right: 30px;
+        top: 0;
+        bottom: 0;
+      }
+
+      .navTrigger i {
+        background-color:midnightblue;
+        border-radius: 2px;
+        content: "";
+        display: block;
+        width: 100%;
+        height: 4px;
+      }
+
+      .navTrigger i:nth-child(1) {
+        -webkit-animation: outT 0.8s backwards;
+        animation: outT 0.8s backwards;
+        -webkit-animation-direction: reverse;
+        animation-direction: reverse;
+      }
+
+      .navTrigger i:nth-child(2) {
+        margin: 5px 0;
+        -webkit-animation: outM 0.8s backwards;
+        animation: outM 0.8s backwards;
+        -webkit-animation-direction: reverse;
+        animation-direction: reverse;
+      }
+
+      .navTrigger i:nth-child(3) {
+        -webkit-animation: outBtm 0.8s backwards;
+        animation: outBtm 0.8s backwards;
+        -webkit-animation-direction: reverse;
+        animation-direction: reverse;
+      }
+
+      .navTrigger.active i:nth-child(1) {
+        -webkit-animation: inT 0.8s forwards;
+        animation: inT 0.8s forwards;
+      }
+
+      .navTrigger.active i:nth-child(2) {
+        -webkit-animation: inM 0.8s forwards;
+        animation: inM 0.8s forwards;
+      }
+
+      .navTrigger.active i:nth-child(3) {
+        -webkit-animation: inBtm 0.8s forwards;
+        animation: inBtm 0.8s forwards;
+      }
+
+      @-webkit-keyframes inM {
+        50% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(45deg);
+        }
+      }
+
+      @keyframes inM {
+        50% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(45deg);
+        }
+      }
+
+      @-webkit-keyframes outM {
+        50% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(45deg);
+        }
+      }
+
+      @keyframes outM {
+        50% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(45deg);
+        }
+      }
+
+      @-webkit-keyframes inT {
+        0% {
+          -webkit-transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          -webkit-transform: translateY(9px) rotate(0deg);
+        }
+        100% {
+          -webkit-transform: translateY(9px) rotate(135deg);
+        }
+      }
+
+      @keyframes inT {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(9px) rotate(0deg);
+        }
+        100% {
+          transform: translateY(9px) rotate(135deg);
+        }
+      }
+
+      @-webkit-keyframes outT {
+        0% {
+          -webkit-transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          -webkit-transform: translateY(9px) rotate(0deg);
+        }
+        100% {
+          -webkit-transform: translateY(9px) rotate(135deg);
+        }
+      }
+
+      @keyframes outT {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(9px) rotate(0deg);
+        }
+        100% {
+          transform: translateY(9px) rotate(135deg);
+        }
+      }
+
+      @-webkit-keyframes inBtm {
+        0% {
+          -webkit-transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          -webkit-transform: translateY(-9px) rotate(0deg);
+        }
+        100% {
+          -webkit-transform: translateY(-9px) rotate(135deg);
+        }
+      }
+
+      @keyframes inBtm {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-9px) rotate(0deg);
+        }
+        100% {
+          transform: translateY(-9px) rotate(135deg);
+        }
+      }
+
+      @-webkit-keyframes outBtm {
+        0% {
+          -webkit-transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          -webkit-transform: translateY(-9px) rotate(0deg);
+        }
+        100% {
+          -webkit-transform: translateY(-9px) rotate(135deg);
+        }
+      }
+
+      @keyframes outBtm {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-9px) rotate(0deg);
+        }
+        100% {
+          transform: translateY(-9px) rotate(135deg);
+        }
+      }
+
+      .affix {
+        padding: 0;
+        background-color:#44446e;
+      }
+
+      .myH2 {
+        text-align: center;
+        font-size: 4rem;
+      }
+      .myP {
+        text-align: justify;
+        padding-left: 15%;
+        padding-right: 15%;
+        font-size: 20px;
+      }
+      @media all and (max-width: 700px) {
+        .myP {
+          padding: 2%;
+        }
+      }
+      body {
+        color: #fff;
+        background: #19aa8d;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .form-control, .form-control:focus, .input-group-addon {
+        border-color: #e1e1e1;
+      }
+        .form-control, .btn {        
+            border-radius: 3px;
+        }
+      .signup-form {
+        width: 390px;
+        margin: 0 auto;
+        padding: 30px 0;
+      }
+        .signup-form form {
+        color: #999;
+        border-radius: 3px;
+          margin-bottom: 15px;
+            background: #fff;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+      .signup-form h2 {
+        color: #333;
+        font-weight: bold;
+            margin-top: 0;
+        }
+        .signup-form hr {
+            margin: 0 -30px 20px;
+        }
+      .signup-form .form-group {
+        margin-bottom: 20px;
+      }
+      .signup-form label {
+        font-weight: normal;
+        font-size: 13px;
+      }
+      .signup-form .form-control {
+        min-height: 38px;
+        box-shadow: none !important;
+      }	
+      .signup-form .input-group-addon {
+        max-width: 42px;
+        text-align: center;
+      }
+      .signup-form input[type="checkbox"] {
+        margin-top: 2px;
+      }   
+        .signup-form .btn{        
+            font-size: 16px;
+            font-weight: bold;
+        background: #031915;
+        border: none;
+        min-width: 140px;
+        }
+      .signup-form .btn:hover, .signup-form .btn:focus {
+        background: #179b81;
+            outline: none;
+      }
+      .signup-form a {
+        color: #fff;	
+        text-decoration: underline;
+      }
+      .signup-form a:hover {
+        text-decoration: none;
+      }
+      .signup-form form a {
+        color: #19aa8d;
+        text-decoration: none;
+      }	
+      .signup-form form a:hover {
+        text-decoration: underline;
+      }
+      .signup-form .fa {
+        font-size: 21px;
+      }
+      .signup-form .fa-paper-plane {
+        font-size: 18px;
+      }
+      .signup-form .fa-check {
+        color: #fff;
+        left: 17px;
+        top: 18px;
+        font-size: 7px;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="logo">
+          <img src="logo.png" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+          <a href="#" style="color: white;font-size: 15px;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;"><b>UNIRIDER</b></a>
+        </div>
+        <div id="mainListDiv" class="main_list">
+          <ul class="navlinks">
+
+            <li><a href="about.html" style="font-size: 20px;color: white;">About</a></li>
+          </ul>
+        </div>
+        <span class="navTrigger">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </nav>
+
+    <section class="home"></section>
+
+<div id="errorMessages" style="color: #19aa8d; font-size: 12px;"></div>
+
+    <div style="height: 500px">
+      <div class="signup-form">
+        <form action="javascript:void(0);" method="POST" class="form">
+        <p style="font-family: Arial, Helvetica, sans-serif;font-size: 15px;color: #19aa8d;">Create your account!</p>
+        <hr>
+            <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <input type="text" class="form-control" name="username" placeholder="Full name"  id="nameInp" required="required">
+            <span id="nameMessage" style="font-size: 12px; color: #ff5252;"></span>
+          </div>
+            </div>
+            <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+            <input type="email" class="form-control" name="email" placeholder="Email Address" id="emailInp" required="required">
+            <span id="emailMessage" style="font-size: 12px; color: #ff5252;"></span>
+          </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                <input type="text" class="form-control" name="uid" placeholder="UID" id="uid" required="required">
+                <span id="uidMessage" style="font-size: 12px; color: #ff5252;"></span>
+              </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input type="password" class="form-control" name="password" placeholder="Password" id="passInp" required="required" onkeyup="checkPasswordStrength()">
+                    <span id="passwordMessage" style="font-size: 12px; color: #ff5252;"></span>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" id="showPasswordCheckbox" onclick="togglePasswordVisibility()"> Show Password
+                  </label>
+                </div>
+            <div class="form-group">
+          <label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>
+        </div>
+        <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg" id="sub">Sign Up</button>
+            </div>
+        </form>
+      <div style="font-size: 15px" class="text-center">Already have an account? <a href="login.html">Login here</a></div>
+      <div id="message" style="color:#44446e; font-size: 17px;text-align: center;"></div>
+
+    </form>
+    </div>
+   
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDT6_-I_PiN8rZ2NzRyMKLRYcSSFgsiX1M",
+        authDomain: "mini-project-16d95.firebaseapp.com",
+        databaseURL: "https://mini-project-16d95-default-rtdb.firebaseio.com",
+        projectId: "mini-project-16d95",
+        storageBucket: "mini-project-16d95.appspot.com",
+        messagingSenderId: "44019272618",
+        appId: "1:44019272618:web:211fb6deef85f75a6cb9d3",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      function checkPasswordStrength() {
+    const password = document.getElementById("passInp").value;
+    const passwordMessage = document.getElementById("passwordMessage");
+
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    const hasSpecialCharacter = /[^a-zA-Z\d]/.test(password);
+    const isLengthValid = password.length >= 8;
+
+    if (!isLengthValid) {
+      passwordMessage.textContent = "Password should be at least 8 characters long.";
+    } else if (!(hasLowerCase && hasUpperCase && hasDigit && hasSpecialCharacter)) {
+      passwordMessage.textContent = "Password should contain at least one lowercase letter, one uppercase letter, one digit, and one special character.";
+    } else {
+      passwordMessage.textContent = "";
+    }
+  }
+
+  function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("passInp");
+    const showPasswordCheckbox = document.getElementById("showPasswordCheckbox");
+
+    if (showPasswordCheckbox.checked) {
+      passwordInput.type = "text";
+    } else {
+      passwordInput.type = "password";
+    }
+  }
+
+      const db = firebase.database();
+      const name = document.getElementById("nameInp");
+      const email = document.getElementById("emailInp");
+      const uid = document.getElementById("uid");
+      const pass = document.getElementById("passInp");
+      const submit = document.getElementById("sub");
+
+      function isEmptyorSpaces(str) {
+        return str == null || str.match(/^ *$/) !== null;
+      }
+
+      function validation() {
+  const emailMessage = document.getElementById("emailMessage");
+  const nameMessage = document.getElementById("nameMessage");
+  const uidMessage = document.getElementById("uidMessage");
+  const passwordMessage = document.getElementById("passwordMessage");
+  let nameregex = /^[A-Za-z\s]+$/;
+  let emailregex = /^u200(\d{4})@rajagiri\.edu\.in$/;
+  let uidregex = /^u200(\d{4})$/;
+
+  // Clear previous error messages
+  emailMessage.textContent = "";
+  nameMessage.textContent = "";
+  uidMessage.textContent = "";
+  passwordMessage.textContent = "";
+
+  if (isEmptyorSpaces(name.value)) {
+    nameMessage.textContent = "Name should not be empty";
+    return false;
+  }
+  if (isEmptyorSpaces(email.value)) {
+    emailMessage.textContent = "Email should not be empty";
+    return false;
+  }
+  if (isEmptyorSpaces(pass.value)) {
+    passwordMessage.textContent = "Password should not be empty";
+    return false;
+  }
+  if (isEmptyorSpaces(uid.value)) {
+    uidMessage.textContent = "UID should not be empty";
+    return false;
+  }
+
+  if (!nameregex.test(name.value)) {
+    nameMessage.textContent = "The name should contain only alphabets";
+    return false;
+  }
+  if (!emailregex.test(email.value)) {
+    emailMessage.textContent = "Invalid email";
+    return false;
+  }
+  if (!uidregex.test(uid.value)) {
+    uidMessage.textContent = "Invalid UID";
+    return false;
+  }
+
+  // Check if email and UID match
+  let emailFirst8Chars = email.value.substring(0, 8);
+  let uidValue = uid.value; 
+  
+  if (emailFirst8Chars !== uidValue) {
+    uidMessage.textContent="Email and UID does not match";
+    emailMessage.textContent="Email and UID does not match";
+    return false;
+  }
+
+  return true;
+}
+
+
+      function RegisterUser() {
+        if (!validation()) {
+          return;
+        }
+        const messageDiv = document.getElementById("message");
+        const uid = document.getElementById("uid");
+        const dbRef = firebase.database().ref();
+        dbRef
+          .child("UIDList")
+          .child(uid.value)
+          .once("value")
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              messageDiv.textContent="Account already exists."
+            } else {
+              dbRef
+                .child("UIDList")
+                .child(uid.value)
+                .set({
+                  fullname: name.value,
+                  email: email.value,
+                  uid: uid.value,
+                  password: encPass(pass.value),
+                })
+                .then(() => {
+                  window.location.href = "login.html";
+                })
+                .catch((error) => {
+                  alert("Error: " + error);
+                });
+            }
+          });
+        }
+      function encPass(password) {
+        var encryptedPass = CryptoJS.AES.encrypt(password, password);
+        return encryptedPass.toString();
+      }
+
+      submit.addEventListener("click", RegisterUser);
+    </script>
+    <script>
+      $(window).scroll(function () {
+        if ($(document).scrollTop() > 50) {
+          $(".nav").addClass("affix");
+          console.log("OK");
+        } else {
+          $(".nav").removeClass("affix");
+        }
+      });
+    </script>
+  </body>
+</html>

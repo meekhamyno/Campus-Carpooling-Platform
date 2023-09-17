@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Panel</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .logo {
+        cursor: pointer;
+      }
+      .registration-entry {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        line-height: 1.5em;
+      }
+      .accept-btn {
+        margin-right: 5px;
+      }
+      .accept-btn,
+      .reject-btn {
+        margin-top: 10px;
+        padding: 10px 30px;
+        background-color: #19aa8d;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        gap: 2px;
+      }
+
+      .accept-btn:hover,
+      .reject-btn:hover {
+        background-color: #128c66;
+      }
+      .nav__links {
+        list-style: none;
+        width: 100vw;
+      }
+
+      .nav__links li {
+        display: inline-block;
+        padding: 0px 20px;
+      }
+
+      .nav__links li a {
+        transition: all 0.3s ease 0s;
+        color: white;
+        text-decoration: none;
+      }
+
+      .nav__links li a:hover {
+        color: #19aa8d;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 10%;
+        background-color: #44446e;
+        width: 100%;
+        position: relative;
+        z-index: 1000;
+      }
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+
+      .app-name {
+        color: #edf0f1;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .view {
+        color: #44446e;
+        position: fixed;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, -100%);
+
+        text-decoration: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img
+          class="logo"
+          src="logo.png"
+          alt=""
+          style="width: 40px; height: 40px; margin-right: 10px"
+        />
+        <span class="app-name" style="color: white; font-size: 15px"
+          >UNIRIDER</span
+        >
+      </div>
+
+      <nav>
+        <ul class="nav__links">
+          <li><a href="admin_home.html">Home</a></li>
+          <li><a href="admin.html">Registrations</a></li>
+          <li><a href="admin_trips.html">Trip details</a></li>
+          <li><a href="admin_reports.html">Reports</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="registration">
+      <ul id="registrationList"></ul>
+      <div class="view">
+        <a href="admin_accepted.html">View accepted registrations</a>
+      </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDT6_-I_PiN8rZ2NzRyMKLRYcSSFgsiX1M",
+        authDomain: "mini-project-16d95.firebaseapp.com",
+        databaseURL: "https://mini-project-16d95-default-rtdb.firebaseio.com",
+        projectId: "mini-project-16d95",
+        storageBucket: "mini-project-16d95.appspot.com",
+        messagingSenderId: "44019272618",
+        appId: "1:44019272618:web:211fb6deef85f75a6cb9d3",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Get Firestore instance
+      const db = firebase.firestore();
+
+      // Get registration list element
+      const registrationList = document.getElementById("registrationList");
+
+      // Display car owner registrations
+      db.collection("Cardetails").onSnapshot((querySnapshot) => {
+        registrationList.innerHTML = "";
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+
+          if (data.status !== "Accepted" && data.status !== "Rejected") {
+            const entryDiv = document.createElement("div");
+            entryDiv.classList.add("registration-entry");
+
+            entryDiv.innerHTML = `
+            <b>Name:</b> ${data.name}<br>
+            <b>Gender:</b> ${data.gender}<br>
+            <b>Semester:</b> ${data.sem}<br>
+            <b>Phone Number:</b> ${data.number}<br>
+            <b>Car Make/Model:</b> ${data.car}<br>
+            <b>Registration Number:</b> ${data.registration_number}<br>
+            <b>Vehicle:</b> <a href="${data.photoURL}" target="_blank">View Vehicle</a><br>
+            <b>License:</b> <a href="${data.licenseURL}" target="_blank">View License</a><br>
+          `;
+
+            const acceptBtn = document.createElement("button");
+            acceptBtn.textContent = "Accept";
+            acceptBtn.classList.add("accept-btn");
+            acceptBtn.addEventListener("click", () =>
+              acceptRegistration(doc.id, entryDiv)
+            );
+
+            const rejectBtn = document.createElement("button");
+            rejectBtn.textContent = "Reject";
+            rejectBtn.classList.add("reject-btn");
+            rejectBtn.addEventListener("click", () =>
+              rejectRegistration(doc.id, entryDiv)
+            );
+
+            entryDiv.appendChild(acceptBtn);
+            entryDiv.appendChild(rejectBtn);
+
+            registrationList.appendChild(entryDiv);
+          }
+        });
+      });
+
+      function acceptRegistration(carOwnerId, listItem) {
+        db.collection("Cardetails")
+          .doc(carOwnerId)
+          .update({
+            status: "Accepted",
+          })
+          .then(() => {
+            // Remove the list item from the UI
+            listItem.remove();
+          })
+          .catch((error) => {
+            console.error("Error accepting registration:", error);
+          });
+      }
+
+      // Reject car owner registration
+      function rejectRegistration(carOwnerId, listItem) {
+        db.collection("Cardetails")
+          .doc(carOwnerId)
+          .update({
+            status: "Rejected",
+          })
+          .then(() => {
+            // Remove the list item from the UI
+            listItem.remove();
+          })
+          .catch((error) => {
+            console.error("Error rejecting registration:", error);
+          });
+      }
+    </script>
+  </body>
+</html>

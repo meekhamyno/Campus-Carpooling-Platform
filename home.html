@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unirider</title>
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    body{
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+   overflow: hidden;
+}
+
+li,
+      a,
+      button {
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        color: #edf0f1;
+        text-decoration: none;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 10%;
+        background-color: #44446e;
+        width: 100%;
+        position: relative; 
+        z-index: 1000;
+      }
+      .dropdown {
+    position: relative;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #19aa8d;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-btn
+  {background-color: #44446e}
+
+  .dropdown-content a:hover {
+    background-color: #44446e;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+      .logo {
+        cursor: pointer;
+      }
+
+      .nav__links {
+        list-style: none;
+      }
+
+      .nav__links li {
+        display: inline-block;
+        padding: 0px 20px;
+      }
+
+      .nav__links li a {
+        transition: all 0.3s ease 0s;
+        color: white;
+      }
+
+      .nav__links li a:hover {
+        color: #19aa8d;
+      }
+
+      button {
+        font-size: 16px;
+        font-weight: none;
+        background: #19aa8d;
+        border: none;
+        min-width: 140px;
+        background-color: #44446e;
+      }
+    
+.body-content{
+    display: flex;
+}
+
+.body-content .b-title{
+    margin-left: 10%;
+}
+
+.body-content .b-title h1{
+    font-size: 30px;
+    margin-top: 100px;
+}
+
+.body-content .b-title span{
+    color: #19aa8d;
+}
+
+.body-content .b-title button{
+    border: none;
+    width: 100px;
+    height: 50px;
+    background: #19aa8d;
+    border-radius: 60px;
+    outline: none;
+    color: white;
+}
+
+
+
+.body-content .b-img img{
+    width: 50%px;
+    height: auto;
+    position:relative;
+   margin-left: 30px;
+   margin-top: -10px; 
+      z-index: -1;
+ 
+}
+.logout-button-container {
+  background-color: #474970; 
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
+.logout-button-container button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: left;
+  color: white;  
+  margin-right: 10px;
+}
+
+
+.logo-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    .app-name {
+        color: #edf0f1;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .user-icon-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; 
+}
+  </style>
+  <body>
+    <header>
+      <div class="logo-container">
+      <img
+        class="logo"
+        src="logo.png"
+        alt=""
+        style="width: 40px; height: 40px; margin-right: 10px"
+      />
+      <span class="app-name">UNIRIDE</span>
+      </div>
+       
+      <nav>
+        <ul class="nav__links">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="driver.html">Offer a ride</a></li>
+          <li><a href="students.html">Book a ride</a></li>
+          <li class="dropdown">
+            <button class="dropdown-btn" onclick="handleTripsDropdown()">
+              Trips
+            </button>
+            <div class="dropdown-content" id="tripsDropdown">
+              <a href="trip.html">Current</a>
+              <a href="history.html">History</a>
+            </div>
+          </li>
+          <li> 
+          
+          <div class="logout-button-container">
+            <button onclick="handleLogout()">Logout</button>
+          </div></li>
+        </ul>
+      </nav>
+
+      <a href="about.html" class="cta"><button></button></a>
+    </header>
+      <div class="body-content">
+        <div class="b-title">
+
+          <h1 style="font-size: 45px;color:#19aa8d">UNIRIDE</h1>
+          <h2 >Connecting campus, Sharing rides</h2>
+          <button id="aboutBtn">About us</button>
+        </div>
+
+        <div class="b-img">
+          <img src="home page.jpg" />
+        </div>
+      </div>
+    </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDT6_-I_PiN8rZ2NzRyMKLRYcSSFgsiX1M",
+        authDomain: "mini-project-16d95.firebaseapp.com",
+        databaseURL: "https://mini-project-16d95-default-rtdb.firebaseio.com",
+        projectId: "mini-project-16d95",
+        storageBucket: "mini-project-16d95.appspot.com",
+        messagingSenderId: "44019272618",
+        appId: "1:44019272618:web:211fb6deef85f75a6cb9d3",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            // User is authenticated, use the UID to fetch data from the database
+            const userUID = user.uid;
+            console.log("Logged-in User UID:", userUID);
+
+            // Fetch user data from the database using this UID
+            const dbRef = firebase.database().ref("UIDList/" + userUID);
+
+            // Attach a listener for changes to the user data
+            dbRef.on("value", (snapshot) => {
+              const userData = snapshot.val();
+              if (userData) {
+                console.log("User Data:", userData);
+                // Now you can display the user data on the page
+                displayUserData(userData);
+              } else {
+                console.log("User data not found");
+              }
+            });
+          } else {
+            // User not authenticated, redirect to login page or handle appropriately
+          }
+        });
+      });
+      function handleTripsDropdown() {
+      const tripsDropdown = document.getElementById("tripsDropdown");
+      tripsDropdown.classList.toggle("show");
+    }
+    const aboutBtn = document.getElementById("aboutBtn");
+  aboutBtn.addEventListener("click", () => {
+    // Redirect to "about.html"
+    window.location.href = "about.html";
+  });
+    function handleLogout() {
+    firebase.auth().signOut()
+      .then(() => {
+        // Redirect to login.html after successful logout
+        window.location.href = "login.html";
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+        
+      });
+  }
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+      if (!event.target.matches(".dropdown-btn")) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+          const openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains("show")) {
+            openDropdown.classList.remove("show");
+          }
+        }
+      }
+    };
+
+      function displayUserData(userData) {
+        // Get the elements where you want to display user data
+        const userNameElement = document.getElementById("userName");
+        const userEmailElement = document.getElementById("userEmail");
+
+        // Update the HTML elements with user data
+        userNameElement.textContent = userData.name;
+        userEmailElement.textContent = userData.email;
+        // Add more elements and placeholders as needed to display other user data
+      }
+    </script>
+  </body>
+</html>

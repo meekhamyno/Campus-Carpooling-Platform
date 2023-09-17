@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Report an Issue</title>
+    <link rel="stylesheet" href="car_owners.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .home-section {
+        background-color: white;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      form {
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        color: rgb(11, 11, 11);
+        width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      form .form-group {
+        display: flex;
+        align-items: center;
+      }
+      form h4 {
+        text-align: center;
+        color: grey;
+      }
+
+      form .form-control {
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid lightgrey;
+        color: black;
+      }
+
+      form .form-group input {
+        flex: 1;
+      }
+      form .form-control:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: lightgrey;
+      }
+      form .form-group input:nth-child(2) {
+        margin-left: 10px;
+      }
+      form .form-group textarea {
+        resize: vertical;
+      }
+
+      form button[type="submit"] {
+        background-color: #19aa8d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 10px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="logo-details">
+        <img
+          src="logo.png"
+          alt="Logo"
+          style="width: 40px; height: 40px; margin-right: 10px"
+        />
+        <div class="logo_name">UNIRIDE</div>
+      </div>
+      <i class="bx bx-menu" id="btn"></i>
+      <ul class="nav-list">
+        <li>
+          <a href="home.html">
+            <i class="bx bxs-home"></i>
+            <span class="links_name">Home</span>
+          </a>
+          <span class="tooltip">Home</span>
+        </li>
+        <li>
+          <a href="driver.html">
+            <i class="bx bxs-car"></i>
+            <span class="links_name">Offer a ride</span>
+          </a>
+          <span class="tooltip">Offer a ride</span>
+        </li>
+        <li>
+          <a href="students.html">
+            <i class="bx bx-user"></i>
+            <span class="links_name">Book a ride</span>
+          </a>
+          <span class="tooltip">Book a ride</span>
+        </li>
+        <li>
+          <a href="trip.html">
+            <i class="bx bx-history"></i>
+            <span class="links_name">Trips</span>
+          </a>
+          <span class="tooltip">Trips</span>
+        </li>
+        <li>
+          <a href="#" class="cta" onclick="handleLogout()">
+            <i class="bx bx-log-out"></i>
+            <span class="links_name">Logout</span>
+          </a>
+          <span class="tooltip">Logout</span>
+        </li>
+      </ul>
+    </div>
+    <section class="home-section">
+      <form id="issueForm">
+        <h4 style="text-align: center; color: black">
+          <b>REPORT AN ISSUE ABOUT TRIP</b>
+        </h4>
+        <br /><br />
+        <div class="form-group">
+          <input
+            type="text"
+            id="name1"
+            name="name"
+            class="form-control"
+            placeholder="Your Name"
+            required
+          />
+          <input
+            type="text"
+            id="uid1"
+            name="uid"
+            class="form-control"
+            placeholder="Your UID"
+            required
+          />
+        </div>
+        <br />
+        <div>
+          <div class="form-group">
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              required
+            />
+            <input
+              type="text"
+              id="uid"
+              name="uid"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <br />
+        <h6 style="color: gray; text-align: left">Issue</h6>
+        <div class="form-group">
+          <textarea
+            id="issue"
+            name="issue"
+            rows="4"
+            class="form-control"
+            required
+          ></textarea>
+          <span id="message" style="font-size: 12px; color: #44446e"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDT6_-I_PiN8rZ2NzRyMKLRYcSSFgsiX1M",
+        authDomain: "mini-project-16d95.firebaseapp.com",
+        databaseURL: "https://mini-project-16d95-default-rtdb.firebaseio.com",
+        projectId: "mini-project-16d95",
+        storageBucket: "mini-project-16d95.appspot.com",
+        messagingSenderId: "44019272618",
+        appId: "1:44019272618:web:211fb6deef85f75a6cb9d3",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      // Extract URL parameters to get driver/passenger details
+      const urlParams = new URLSearchParams(window.location.search);
+      const name = decodeURIComponent(urlParams.get("name"));
+      const uid = decodeURIComponent(urlParams.get("uid"));
+
+      // Form fields with the driver/passenger details
+      document.getElementById("name").value = name;
+      document.getElementById("uid").value = uid;
+      function handleLogout() {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            // Redirect to login.html after successful logout
+            window.location.href = "login.html";
+          })
+          .catch((error) => {
+            console.error("Error during logout:", error);
+          });
+      }
+      function validateForm() {
+        const name1Value = document.getElementById("name1").value;
+        const uid1Value = document.getElementById("uid1").value;
+        const nameValue = document.getElementById("name").value;
+        const uidValue = document.getElementById("uid").value;
+        const issueValue = document.getElementById("issue").value;
+        const message = document.getElementById("message");
+        // Check if any of the fields are empty
+        if (
+          name1Value.trim() === "" ||
+          uid1Value.trim() === "" ||
+          nameValue.trim() === "" ||
+          uidValue.trim() === "" ||
+          issueValue.trim() === ""
+        ) {
+          message.textContent = "Please fill in all the details.";
+          return false;
+        }
+
+        // Form is valid
+        return true;
+      }
+      // Handle form submission
+      const issueForm = document.getElementById("issueForm");
+      issueForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (validateForm()) {
+          const nameValue1 = document.getElementById("name1").value;
+          const uidValue1 = document.getElementById("uid1").value;
+          const nameValue = document.getElementById("name").value;
+          const uidValue = document.getElementById("uid").value;
+          const issueValue = document.getElementById("issue").value;
+          db.collection("reports")
+            .add({
+              name1: nameValue1,
+              uid1: uidValue1,
+              name: nameValue,
+              uid: uidValue,
+              issue: issueValue,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            })
+            .then(() => {
+              alert("Issue reported successfully!");
+              // Redirect to the home page
+              window.location.href = "home.html";
+            })
+            .catch((error) => {
+              console.error("Error reporting issue:", error);
+              alert(
+                "An error occurred while reporting the issue. Please try again later."
+              );
+            });
+        }
+      });
+      let sidebar = document.querySelector(".sidebar");
+      let closeBtn = document.getElementById("btn");
+
+      closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();
+      });
+
+      function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+        } else {
+          closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+      }
+    </script>
+  </body>
+</html>

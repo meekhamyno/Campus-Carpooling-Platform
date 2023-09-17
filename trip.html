@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Current trips</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <title>Current trips</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      li,
+      a {
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        color: edf0f1;
+        text-decoration: none;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 5%;
+        background-color: #474970;
+      }
+
+      .logo {
+        cursor: pointer;
+      }
+
+      .nav__links {
+        list-style: none;
+        width:100vw;
+        height:40px;
+        margin-left: 250px;
+      }
+
+      .nav__links li {
+        display: inline-block;
+        padding: 0px 20px;
+      }
+
+      .nav__links li a {
+        transition: all 0.3s ease 0s;
+        color: white;
+      }
+
+      .nav__links li a:hover {
+        color: #0088a9;
+      }
+
+      button {
+        padding: 9px 25px;
+        background-color: #474970;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease 0s;
+      }
+
+      .reportButton,
+      .payButton,.startTripButton {
+        appearance: button;
+        backface-visibility: hidden;
+        background-color: black;
+        border-radius: 6px;
+        border-width: 0;
+        box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset,
+          rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-family: -apple-system, system-ui, "Segoe UI", Roboto,
+          "Helvetica Neue", Ubuntu, sans-serif;
+        font-size: 16px;
+        height: 44px;
+        line-height: 1.15;
+        margin: 12px 0 0;
+        outline: none;
+        overflow: hidden;
+        padding: 0 25px;
+        position: relative;
+        text-align: center;
+        text-transform: none;
+        transform: translateZ(0);
+        transition: all 0.2s, box-shadow 0.08s ease-in;
+        user-select: none;
+        width: 100px;
+        margin-right:30px;
+      }
+
+      .trip-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+        font-family: "Inter", sans-serif;
+      }
+
+      .left-half {
+        flex: 1;
+      }
+
+      .right-half {
+        flex: 1;
+        margin-left: 20px;
+      }
+
+      .left-half p,
+      .right-half p {
+        margin-bottom: 5px;
+      }
+      .button-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .logout-button-container {
+  background-color: #474970; 
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
+.logout-button-container button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: left;
+  color: white;  
+  margin-left: -15px;
+}
+.logo-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    .app-name {
+        color: #edf0f1;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <header>
+        <div class="logo-container">
+          <img
+            class="logo"
+            src="logo.png"
+            alt=""
+            style="width: 40px; height: 40px; margin-right: 10px"
+          />
+          <span class="app-name">UNIRIDE</span>
+          </div>
+      <nav>
+        <ul class="nav__links">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="driver.html">Offer a ride</a></li>
+          <li><a href="students.html">Book a ride</a></li>
+          <li><a href="trip.html">Trips</a></li>
+          <li>
+            <div class="logout-button-container">
+             
+              <button onclick="handleLogout()">
+                Logout
+                
+              </button>
+            </div>
+          </li>
+          
+        </ul>
+      </nav>
+ </header>
+     </div>
+  </nav>
+ 
+</div>
+
+  <div>
+    </header>
+    <section class="home-section">
+      <div style="margin-top: 20px; margin-left: 30px" id="tripDetails"></div>
+    </section>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+      // Initialize Firebase 
+      const firebaseConfig = {
+        apiKey: "AIzaSyDT6_-I_PiN8rZ2NzRyMKLRYcSSFgsiX1M",
+        authDomain: "mini-project-16d95.firebaseapp.com",
+        databaseURL: "https://mini-project-16d95-default-rtdb.firebaseio.com",
+        projectId: "mini-project-16d95",
+        storageBucket: "mini-project-16d95.appspot.com",
+        messagingSenderId: "44019272618",
+        appId: "1:44019272618:web:211fb6deef85f75a6cb9d3",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      document.addEventListener("DOMContentLoaded", function () {
+        function formatDateWithIndianTime(date) {
+          const options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            timeZoneName: "short",
+            timeZone: "Asia/Kolkata",
+          };
+          return date.toLocaleString("en-US", options);
+        }
+        // Retrieve the UID from session storage or local storage
+        const userUID =
+          JSON.parse(sessionStorage.getItem("userUID")) ||
+          JSON.parse(localStorage.getItem("userUID"));
+        const uid = userUID && userUID.uid;
+
+        console.log("uid:", uid);
+        
+   
+
+        if (!userUID) {
+          // Redirect to the login page if the UID is not found
+          window.location = "login.html";
+        } else {
+          const todayDate = new Date();
+          todayDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+          const todayTimestamp =
+            firebase.firestore.Timestamp.fromDate(todayDate);
+
+          console.log("Today's date:", todayDate);
+
+          let query = db.collection("bookings");
+
+          query
+            .where("bookingDate", ">=", todayTimestamp)
+            .where(
+              "bookingDate",
+              "<",
+              firebase.firestore.Timestamp.fromMillis(
+                todayTimestamp.toMillis() + 86400000
+              )
+            )
+            .get()
+            .then((querySnapshot) => {
+              const tripDetailsContainer = document.getElementById("tripDetails");
+
+    if (querySnapshot.empty) {
+      tripDetailsContainer.innerHTML = "No trips scheduled for the current date.";
+      return;
+    }
+
+
+              console.log("Query snapshot size:", querySnapshot.size);
+
+              const tripEntries = [];
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+
+                console.log("Document data:", data);
+                console.log("userUID:", JSON.stringify(userUID));
+                console.log("Driver UID:", JSON.stringify(data.driver.uid));
+                console.log(
+                  "Passenger UID:",
+                  JSON.stringify(data.passenger.uid)
+                );
+
+                // Check if the logged-in user is a driver or passenger
+                if (data.driver && data.driver.uid === uid) {
+                  console.log("User is a driver.");
+                  const formattedDate = formatDateWithIndianTime(
+                    data.bookingDate.toDate()
+                  );
+                  const price = data.price;
+const time = data.time;
+
+                  const tripEntry = `
+                                  <div class="trip-entry">
+                                    <div class="trip-container">
+                                      <div class="left-half">
+                                    <strong>PASSENGER DETAILS</strong>
+                                    <p>Name: ${data.passenger.name}<br>
+                                    UID:${data.passenger.uid}<br>
+                                    <i class='bx bx-phone' ></i> ${data.passenger.number1}<br></div>
+                                    <div class="right-half">
+                                    Location : ${data.passenger.location}<br>
+                                    <i class='bx bx-rupee'></i> ${price}<br>
+                                    <i class='bx bxs-time'></i> ${time}<br>
+
+                                    Booking Date: ${formattedDate}</p>
+                                    </div>
+                                    <button class="startTripButton" data-location="${data.passenger.location}">Start Trip</button><br>
+                                    <button class="reportButton" data-name="${data.passenger.name}" data-uid="${data.passenger.uid}">Report</button>
+</div></div>
+                                `;
+
+                  tripEntries.push(tripEntry);
+                } else if (data.passenger && data.passenger.uid === uid) {
+                  console.log("User is a passenger.");
+                  const formattedDate = formatDateWithIndianTime(
+                    data.bookingDate.toDate()
+                  );
+                       const price = data.price;
+const time = data.time;
+                  const tripEntry = `
+                                  <div class="trip-entry">
+                                    <div class="trip-container">
+                                      <div class="left-half">
+                                    <strong>DRIVER DETAILS</strong>
+                                    <p> Name: ${data.driver.name}<br>
+                                   UID: ${data.driver.uid}<br>
+                                    <i class='bx bx-phone' ></i> ${data.driver.number}<br></div>
+                                    <div class="right-half">
+                                    <p>RIDE DETAILS <br>
+                                    Registration number : ${data.driver.registration_number}<br>
+                                     Car: ${data.driver.car}<br>
+                                     Location : ${data.passenger.location}<br>
+                                     <i class='bx bx-rupee'></i> ${price}<br>
+        <i class='bx bxs-time'></i> ${time}<br>
+
+                                    Booking Date: ${formattedDate}</p></div>
+                                    
+                                    <div class="button-container">
+                                      
+                                    
+                                  
+                                  <button class="payButton" data-trip-id="${doc.id}" data-name="${data.driver.name}">Pay</button></div>
+                                  <button class="reportButton" data-name="${data.driver.name}" data-uid="${data.driver.uid}">Report</button>
+                  </div></div>
+            `;
+                  tripEntries.push(tripEntry);
+                }
+              });
+              // Display the trip entries in the tripDetailsContainer
+              
+              tripDetailsContainer.innerHTML = tripEntries.join("");
+              const startTripButtons = document.getElementsByClassName("startTripButton");
+  Array.from(startTripButtons).forEach((button) => {
+    button.addEventListener("click", () => {
+      const destination = button.getAttribute("data-location");
+      if (destination) {
+        const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+          destination
+        )}`;
+        window.location.href = mapsUrl;
+      } else {
+        alert("Location not available for navigation.");
+      }
+    });
+  });
+              // Add event listeners to each report button
+              const reportButtons =
+                document.getElementsByClassName("reportButton");
+              Array.from(reportButtons).forEach((button) => {
+                button.addEventListener("click", () => {
+                  const name = button.getAttribute("data-name");
+                  const uid = button.getAttribute("data-uid");
+                  const reportLink = `report.html?name=${encodeURIComponent(
+                    name
+                  )}&uid=${encodeURIComponent(uid)}`;
+                  window.location.href = reportLink;
+                });
+              });
+
+              const payButtons = document.getElementsByClassName("payButton");
+              Array.from(payButtons).forEach((button) => {
+                button.addEventListener("click", () => {
+                  window.location.href = "pay.html";
+                });
+              });
+            })
+  
+
+            .catch((error) => {
+              console.error("Error fetching trip details: ", error);
+              document.getElementById("tripDetails").innerHTML =
+                "Error fetching trip details. Please try again later.";
+            });
+        }
+      });
+      function handleLogout() {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            // Redirect to login.html after successful logout
+            window.location.href = "login.html";
+          })
+          .catch((error) => {
+            console.error("Error during logout:", error);
+            
+          });
+      }
+    </script>
+  </body>
+</html>

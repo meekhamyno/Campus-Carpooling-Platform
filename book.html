@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      li,
+      a,
+      button {
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        color: #edf0f1;
+        text-decoration: none;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 10%;
+        background-color: #474970;
+        width: 100%;
+      }
+
+      .logo {
+        cursor: pointer;
+      }
+
+      .nav__links {
+        list-style: none;
+        height:50px;
+      }
+
+      .nav__links li {
+        display: inline-block;
+        padding: 0px 20px;
+      }
+
+      .nav__links li a {
+        transition: all 0.3s ease 0s;
+        color: white;
+      }
+
+      .nav__links li a:hover {
+        color: #0088a9;
+      }
+
+      button {
+        font-size: 16px;
+        font-weight: bold;
+        background: #474970;
+        border: none;
+        min-width: 140px;
+      }
+    
+
+
+      .form-control,
+      .form-control:focus,
+      .input-group-addon {
+        border-color: #e1e1e1;
+      }
+      .form-control,
+      .btn {
+        border-radius: 3px;
+      }
+
+      .signup-form {
+        width: 100%;
+        max-width: 800px;
+        margin: 130px auto;
+        padding: 30px;
+        border-radius: 5px;
+        background: #ffffff;
+
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+
+
+      }
+      .button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px; 
+  }
+      .signup-form h2 {
+        color: #333;
+        font-weight: bold;
+        margin-top: 0;
+        margin-bottom: 20px;
+        
+      }
+
+      .signup-form p {
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      .row {
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-top: 20px;
+      }
+
+      .col-md-6 {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .button-container {
+        margin-top: 20px; 
+        display: flex;
+        justify-content: center;
+      }
+
+     
+  
+  
+  #passengerDetails {
+    padding: 10px;
+    background-color: #f2f2f2;
+
+    border-radius: 5px;
+   
+  }
+
+
+  #passengerDetails strong {
+    display: block;
+    font-weight: bold;
+  }
+  .driver-details-container {
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    
+  }
+  .driver-details-container i {
+    margin-right: 5px;
+  }
+
+
+  .driver-details-container strong {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  .button-9 {
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: black;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset, rgba(50, 50, 93, 0.1) 0 2px 5px 0,
+    rgba(0, 0, 0, 0.07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
+  font-size: 16px; 
+  height: 44px;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 25px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all 0.2s, box-shadow 0.08s ease-in;
+  user-select: none;
+  width: 250px;
+}
+
+
+.button-9:focus {
+  box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset, rgba(50, 50, 93, 0.2) 0 6px 15px 0,
+    rgba(0, 0, 0, 0.1) 0 2px 2px 0, rgba(50, 151, 211, 0.3) 0 0 0 4px;
+}
+.details
+{
+  text-align: left;
+  margin-left: 11px;
+  
+}
+.main-content
+{
+  background-color: #19aa8d;
+}
+.logout-button-container {
+  background-color: #474970; 
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
+.logout-button-container button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: left;
+  color: white;  
+  margin-left: -15px;
+}
+.logo-container {
+        display: flex;
+        align-items: center;
+    }
+
+
+    .logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    .app-name {
+        color: #edf0f1;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    </style>
+  </head>
+  <body>
+    <body class="main-content">
+    <nav class="nav">
+      <header>
+        <div class="logo-container">
+          <img
+            class="logo"
+            src="logo.png"
+            alt=""
+            style="width: 40px; height: 40px; margin-right: 10px"
+          />
+          <span class="app-name">UNIRIDE</span>
+          </div>
+      <nav>
+        <ul class="nav__links">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="driver.html">Offer a ride</a></li>
+          <li><a href="students.html">Book a ride</a></li>
+          <li><a href="trip.html">Trips</a></li>
+          <li>
+            <div class="logout-button-container">
+             
+              <button onclick="handleLogout()">
+                Logout
+                </button>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      </header>
+    </div>
+    </nav>
+    </div>
+    <div>
+   <section class="home-section">
+      <div class="container">
+        <div class="signup-form">
+          <h3 style="color: #19aa8d;">CONFIRM BOOKING DETAILS</h3>
+          <div class="row">
+            <!-- Driver Details Column -->
+            <div class="col-md-6">
+              <div id="driverDetails"></div>
+            </div>
+            <!-- Passenger Details Column -->
+            <div class="col-md-6">
+              <div id="passengerDetails"></div>
+            </div>
+          </div>
+<div class="details">
+  <div id="details"></div>
+        <div class="button-container">
+          <button id="confirmBookingBtn" class="button-9">Confirm</button>
+          <button id="cancelBookingBtn" class="button-9">Cancel</button>
+        </div>
+      </div>
+    </section>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDT6_-I_PiN8rZ2NzRyMKLRYcSSFgsiX1M",
+        authDomain: "mini-project-16d95.firebaseapp.com",
+        databaseURL: "https://mini-project-16d95-default-rtdb.firebaseio.com",
+        projectId: "mini-project-16d95",
+        storageBucket: "mini-project-16d95.appspot.com",
+        messagingSenderId: "44019272618",
+        appId: "1:44019272618:web:211fb6deef85f75a6cb9d3",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      function getTimeForLocation(location) {
+        switch (location.toLowerCase()) {
+          case "kakkanad":
+            return "8:10am";
+            case "mavelipuram":
+            return "8:10am";
+          case "padamughal":
+            return "8:00am";
+          case "vazhakkala":
+            return "8:00am";
+          case "chembumukku":
+            return "8:00am";
+          case "padivattom":
+            return "7:55am";
+          case "palarivattom":
+            return "7:50am";
+          case "kaloor":
+            return "7:45am";
+          case "pipeline":
+            return "7:45am";
+          case "bypass":
+            return "7:45am";
+          case "emc":
+            return "7:45am";
+          case "vennala":
+            return "7:45am";
+          case "vytila":
+            return "7:45am";
+          case "bmc":
+            return "8:00am";
+          case "kalamassery":
+            return "7:45am";
+          case "edapally":
+            return "7:50am";
+          default:
+            return "N/A";
+        }
+      }
+
+      function calculatePrice(location) {
+        switch (location.toLowerCase()) {
+          case "kakkanad":
+            return "20-40/-";
+            case "mavelipuram":
+            return "20-40/-";
+          case "padamughal":
+            return "30-50/-";
+          case "vazhakkala":
+            return "40-60/-";
+          case "chembumukku":
+            return "40-60/-";
+          case "padivattom":
+            return "50-70/-";
+          case "palarivattom":
+            return "60-80/-";
+          case "kaloor":
+            return "70-90/-";
+          case "pipeline":
+            return "60-80/-";
+          case "bypass":
+            return "70-90/-";
+          case "emc":
+            return "70-90/-";
+          case "vennala":
+            return "70-90/-";
+          case "vytila":
+            return "80-100/-";
+          case "bmc":
+            return "20-40/-";
+          case "kalamassery":
+            return "80-100/-";
+          case "edapally":
+            return "70-90/-";
+          default:
+            return "N/A";
+        }
+      }
+      function formatDateWithIndianTime(date) {
+        const options = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          timeZoneName: "short",
+          timeZone: "Asia/Kolkata",
+        };
+        return date.toLocaleString("en-US", options);
+      }
+
+      function redirectToStudentsPage(status) {
+        const queryParams = new URLSearchParams({
+          status: status,
+        });
+        window.location.href = `students.html?${queryParams.toString()}`;
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const queryParams = new URLSearchParams(window.location.search);
+        const driverData = JSON.parse(queryParams.get("driver"));
+        const passengerData = JSON.parse(queryParams.get("passenger"));
+        const location = passengerData.location;
+        const pickupDropFilter = queryParams.get("pickupDrop");
+        console.log("pickupDrop:", pickupDropFilter);
+
+        let time;
+        if (pickupDropFilter === "Drop to college") {
+          time = getTimeForLocation(location);
+        } else if (pickupDropFilter === "Pick-up from college") {
+          time = "4:45pm";
+        } else {
+          time = "N/A";
+        }
+        function handleLogout() {
+    firebase.auth().signOut()
+      .then(() => {
+        // Redirect to login.html after successful logout
+        window.location.href = "login.html";
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+        
+      });
+  }
+
+        const price = calculatePrice(location);
+
+        const driverDetailsEl = document.getElementById("driverDetails");
+        driverDetailsEl.innerHTML = `
+        <div class="driver-details-container">
+          <strong>DRIVER</strong>
+          Name: ${driverData.name}<br />
+          UID: ${driverData.uid}<br />
+          <i class='bx bx-phone-call'></i> ${driverData.number}<br/>
+          Registration Number: ${driverData.registration_number}<br />
+          Car: ${driverData.car}<br /><br/>
+        `;
+
+        const passengerDetailsEl = document.getElementById("passengerDetails");
+        passengerDetailsEl.innerHTML = `
+        <div class="passenger-details-container">
+        <strong>PASSENGER</strong>
+          Name: ${passengerData.name}<br />
+          UID: ${passengerData.uid}<br />
+          <i class='bx bx-phone-call'></i> ${passengerData.number1}<br />
+        `;
+        const DetailsEl = document.getElementById("details");
+        DetailsEl.innerHTML = `
+        <strong>RIDE DETAILS</strong><br>
+          ${passengerData.location}<br />
+          <i class='bx bx-rupee'></i> ${price}<br>
+          <i class='bx bxs-time'></i> ${time}
+        `;
+
+        const confirmBookingBtn = document.getElementById("confirmBookingBtn");
+        confirmBookingBtn.addEventListener("click", () => {
+          const carRef = db
+            .collection("Cardetails")
+            .where("uid", "==", driverData.uid);
+
+          carRef
+            .get()
+            .then((querySnapshot) => {
+              if (querySnapshot.empty) {
+                console.error("Document not found for UID:", driverData.uid);
+                return;
+              }
+
+              const carDoc = querySnapshot.docs[0];
+              const carData = carDoc.data();
+              const currentSeatCount = carData.seat || 0;
+              if (currentSeatCount > 0) {
+                // Decrement the seat count
+                carDoc.ref
+                  .update({ seat: currentSeatCount - 1 })
+                  .then(() => {
+                    console.log("Seat count decremented successfully.");
+                    const bookingDate = firebase.firestore.Timestamp.fromDate(new Date());;
+                    // Modify the driverData object to remove the licenseurl field
+                    const driverWithoutLicenseURL = { ...driverData };
+                    delete driverWithoutLicenseURL.licenseURL;
+
+                    // Add the booking details to the "bookings" collection
+                    db.collection("bookings")
+                      .add({
+                        driver: driverWithoutLicenseURL,
+                        passenger: passengerData,
+                        bookingDate: bookingDate,
+                        price: price,
+                        time: time,
+                      })
+                      .then(() => {
+                        console.log(
+                          "Booking details added to the 'bookings' collection."
+                        );
+                        window.location.href = "students.html";
+                      })
+                      .catch((error) => {
+                        console.error("Error adding booking details:", error);
+                      });
+                  })
+                  .catch((error) => {
+                    console.error("Error decrementing seat count:", error);
+                  });
+              } else {
+                console.error("Seat count invalid or already 0.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching car details:", error);
+            });
+        });
+
+       
+        const cancelBookingBtn = document.getElementById("cancelBookingBtn");
+        cancelBookingBtn.addEventListener("click", () => {
+          // Redirect back to students.html with the status "canceled"
+          redirectToStudentsPage("canceled");
+        });
+      });
+    </script>
+  </body>
+</html>
